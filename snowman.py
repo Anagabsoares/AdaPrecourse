@@ -1,13 +1,7 @@
 import random
 from wonderwords import RandomWord
 
-
-r = RandomWord()
-
-print(r)
-
-SNOWMAN_WORD= 'snow'
-SNOWMAN_WRONG_GUESSES  = 7
+SNOWMAN_WRONG_GUESSES  = 8
 SNOWMAN_MAX_WORD_LENGTH = 8
 SNOWMAN_MIN_WORD_LENGTH = 5
 SNOWMAN_1 = '*   *   *  '
@@ -17,10 +11,12 @@ SNOWMAN_4 = '  * (")    '
 SNOWMAN_5 = '  \( : )/ *'
 SNOWMAN_6 = '* (_ : _)  '
 SNOWMAN_7 = '-----------'
-encrypt_list= []
 
 
-def get_letter_from_user():
+
+
+
+def get_letter_from_user( wrong_guessed_list, correct_guessed_list, snowman_word):
     flag_one_letter = False
     letter_from_user = None
     while not flag_one_letter:
@@ -29,23 +25,39 @@ def get_letter_from_user():
             print("Invalid character, please enter a letter.")
         elif len(letter_from_user) > 1:
             print('You should input one single letter.')
+        elif letter_from_user in wrong_guessed_list or letter_from_user in correct_guessed_list:
+            print('You have already guessed that letter')
         else:
             flag_one_letter = True
     return letter_from_user
 
 
 def snowman():
+
+    r = RandomWord()
+    snowman_word = r.word(
+    word_min_length = SNOWMAN_MIN_WORD_LENGTH, word_max_length = SNOWMAN_MAX_WORD_LENGTH)
     flag_correct_guess= False
     count_correct_guesses = 0
     count_wrong_guesses = 0
+    wrong_guessed_list = []
+    correct_guessed_list = []
+
+    print(snowman_word)
     while not flag_correct_guess and count_wrong_guesses < SNOWMAN_WRONG_GUESSES: 
-        letter =  get_letter_from_user()
-        if  letter in SNOWMAN_WORD:
+        letter =  get_letter_from_user(wrong_guessed_list,correct_guessed_list, snowman_word)
+        if  letter in snowman_word:
+            print(f"you guessed one letter that is in our word!")
+            correct_guessed_list.append(letter)
             count_correct_guesses += 1
             if count_correct_guesses == SNOWMAN_WRONG_GUESSES:
                 flag_correct_guess = True     
         else:
+            print(f"The letter {letter} is not in the word ")
+            wrong_guessed_list.append(letter)
             count_wrong_guesses += 1
+
+        print(correct_guessed_list)
         draw_snowman(count_wrong_guesses)
             
     result = f"You made {count_correct_guesses} correct and {count_wrong_guesses} incorrect guesses" 
