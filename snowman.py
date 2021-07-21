@@ -1,16 +1,16 @@
 import random
 from wonderwords import RandomWord
 
-SNOWMAN_WRONG_GUESSES  = 8
+SNOWMAN_WRONG_GUESSES  = 7
 SNOWMAN_MAX_WORD_LENGTH = 8
 SNOWMAN_MIN_WORD_LENGTH = 5
-SNOWMAN_1 = '*   *   *  '
-SNOWMAN_2 = ' *   _ *   '
-SNOWMAN_3 = '   _[_]_ * '
-SNOWMAN_4 = '  * (")    '
-SNOWMAN_5 = '  \( : )/ *'
-SNOWMAN_6 = '* (_ : _)  '
-SNOWMAN_7 = '-----------'
+SNOWMAN_GRAPHIC = ['*   *   *  ',
+            ' *   _ *   ',
+            '   _[_]_ * ',
+            '  * (")    ',
+            '  \( : )/ *',
+            '* (_ : _)  ',
+            '-----------']
 
 
 
@@ -63,22 +63,10 @@ def snowman():
     result = f"You made {count_correct_guesses} correct and {count_wrong_guesses} incorrect guesses" 
     return result
             
-def draw_snowman(count_wrong_guesses):
-    for item in range(SNOWMAN_WRONG_GUESSES +1 - count_wrong_guesses, SNOWMAN_WRONG_GUESSES+1):
-        if item  == 1:
-            print(SNOWMAN_1)
-        elif item == 2:
-            print(SNOWMAN_2)
-        elif item ==3:
-            print(SNOWMAN_3)
-        elif item ==4:
-            print(SNOWMAN_4)   
-        elif item ==5:
-            print(SNOWMAN_5)
-        elif item ==6:
-            print(SNOWMAN_6) 
-        elif item ==7:    
-            print(SNOWMAN_7)  
+def draw_snowman(wrong_guesses_count):
+    for i in range(SNOWMAN_WRONG_GUESSES - wrong_guesses_count,
+                SNOWMAN_WRONG_GUESSES):
+        print(SNOWMAN_GRAPHIC[i])
 
 snowman()    
 
