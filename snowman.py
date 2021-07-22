@@ -16,7 +16,7 @@ SNOWMAN_GRAPHIC = ['*   *   *  ',
 
 
 
-def get_letter_from_user( wrong_guessed_list, correct_guessed_list, snowman_word):
+def get_letter_from_user( wrong_guessed_list, snowman_dict):
     flag_one_letter = False
     letter_from_user = None
     while not flag_one_letter:
@@ -25,8 +25,10 @@ def get_letter_from_user( wrong_guessed_list, correct_guessed_list, snowman_word
             print("Invalid character, please enter a letter.")
         elif len(letter_from_user) > 1:
             print('You should input one single letter.')
-        elif letter_from_user in wrong_guessed_list or letter_from_user in correct_guessed_list:
+        elif letter_from_user in wrong_guessed_list:
             print('You have already guessed that letter')
+        elif letter_from_user in snowman_dict and snowman_dict[letter_from_user] == True :
+            print(f'You have already guesses that letter {letter_from_user} and it is in the word')
         else:
             flag_one_letter = True
     return letter_from_user
@@ -37,29 +39,29 @@ def snowman():
     r = RandomWord()
     snowman_word = r.word(
     word_min_length = SNOWMAN_MIN_WORD_LENGTH, word_max_length = SNOWMAN_MAX_WORD_LENGTH)
+    print(snowman_word)
     flag_correct_guess= False
     count_correct_guesses = 0
     count_wrong_guesses = 0
     wrong_guessed_list = []
-    correct_guessed_list = []
-
-    print(snowman_word)
+    snowman_dict = snowman_word_dict(snowman_word)
     while not flag_correct_guess and count_wrong_guesses < SNOWMAN_WRONG_GUESSES: 
-        letter =  get_letter_from_user(wrong_guessed_list,correct_guessed_list, snowman_word)
-        if  letter in snowman_word:
+        letter =  get_letter_from_user(wrong_guessed_list, snowman_dict)
+        print(letter)
+        if  letter in snowman_dict:
             print(f"you guessed one letter that is in our word!")
-            correct_guessed_list.append(letter)
-            count_correct_guesses += 1
-            if count_correct_guesses == SNOWMAN_WRONG_GUESSES:
-                flag_correct_guess = True     
+            snowman_dict[letter] = True
+            # correct_guessed_list.append(letter)
+            # count_correct_guesses += 1
+            # if count_correct_guesses == SNOWMAN_WRONG_GUESSES:     
         else:
             print(f"The letter {letter} is not in the word ")
             wrong_guessed_list.append(letter)
             count_wrong_guesses += 1
 
-        print(correct_guessed_list)
+        print(snowman_dict)
         draw_snowman(count_wrong_guesses)
-            
+        print(wrong_guessed_list)    
     result = f"You made {count_correct_guesses} correct and {count_wrong_guesses} incorrect guesses" 
     return result
             
@@ -68,70 +70,15 @@ def draw_snowman(wrong_guesses_count):
                 SNOWMAN_WRONG_GUESSES):
         print(SNOWMAN_GRAPHIC[i])
 
+
+def snowman_word_dict(word):
+    word_dict= {}
+    for letter in word:
+        if not letter in word_dict:
+            word_dict[letter] = False
+    print(word_dict)
+    return word_dict
+
+
 snowman()    
-
-
-# EXERCISE
-# Best Burger needs help creating order_summary 
-# for their drive-thru display. 
-# Best Burger menu include: $5.25 burger, $2.50 fries, and a $4.25 milkshake. 
-# Create the helper function calculate_total that 
-# takes in a list of items and calculates the total to be used in order_summary.
-
-# # example input items	example output (return value)
-# # ['fries', 'fries', 'burger']	10.25
-# # ['fries', 'milkshake', 'burger']	12
-
-
-# order_items= ['fries', 'fries', 'burger']
-
-# def calculate_total(order_items):
-#     total = 0
-#     for item in order_items:
-#         if item == 'fries':
-#             total = total + 2.50
-#         if item == 'burger':
-#             total += 5.25
-#         if item == "milkshake":
-#             total += 4.25
-#     return total 
-        
-# def order_summary(order_items):
-#     total = calculate_total(order_items)
-    
-#     print("*** Welcome to Best Burger ***")
-#     print("Order Items: ")
-#     for item in order_items:
-#         print(item)
-#     print(f"Total: {total}")
-
-# order_summary(order_items)   
-
-# # EXERCISE
-# # FastBooks needs help developing an income statement generator. 
-# # Given a list of expense costs, create the function calculate_expenses.
-# #  This function will be used in calculate_net_income.
-
-# # example input expense costs	example output (return value)
-# # [10, 20, 30]	60
-
-
-# expense_costs = [10, 20, 30]
-# revenue = 1000
-# def calculate_expenses(expense_costs):
-#     total = 0
-#     for expense in expense_costs:
-#         total += expense
-#     return total 
-    
-# def calculate_net_income(revenue, expense_costs):
-#     expenses = calculate_expenses(expense_costs)
-#     net_income = revenue - expenses
-#     return net_income
-
-# print(calculate_net_income(revenue, expense_costs))
-
-
-
-
-
+  
